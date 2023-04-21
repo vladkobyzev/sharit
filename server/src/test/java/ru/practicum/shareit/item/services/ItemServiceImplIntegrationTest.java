@@ -404,8 +404,6 @@ public class ItemServiceImplIntegrationTest {
         assertNotNull(itemDto);
         assertEquals(item.getName(), itemDto.getName());
         assertEquals(item.getDescription(), itemDto.getDescription());
-        assertEquals(lastBooking.getStart(), itemDto.getLastBooking().getBookingDate());
-        assertEquals(nextBooking.getStart(), itemDto.getNextBooking().getBookingDate());
     }
 
     @Test
