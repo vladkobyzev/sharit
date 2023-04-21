@@ -198,6 +198,7 @@ public class ItemServiceImpl implements ItemService {
         dto.setBookerId(booking.getBooker().getId());
         return dto;
     }
+
     private LocalDateTime getCurrentTime() {
         return LocalDateTime.now(ZoneId.of("Europe/Moscow"));
     }
