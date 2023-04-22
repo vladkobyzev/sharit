@@ -18,7 +18,6 @@ import ru.practicum.shareit.util.BookingState;
 import ru.practicum.shareit.util.BookingStatus;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -164,6 +163,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private LocalDateTime getCurrentTime() {
-        return LocalDateTime.now(ZoneId.of("Europe/Moscow"));
+        return LocalDateTime.now();
     }
 }

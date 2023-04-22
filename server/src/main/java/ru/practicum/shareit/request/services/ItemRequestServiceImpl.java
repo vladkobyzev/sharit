@@ -13,7 +13,6 @@ import ru.practicum.shareit.request.repositories.RequestRepository;
 import ru.practicum.shareit.user.services.UserService;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         userService.isExistUser(userId);
         ItemRequest request = convertDtoToRequest(requestDto);
         request.setOwner(userId);
-        request.setCreated(LocalDateTime.now(ZoneId.of("Europe/Moscow")));
+        request.setCreated(LocalDateTime.now());
         return convertRequestToDto(requestRepository.save(request));
     }
 
