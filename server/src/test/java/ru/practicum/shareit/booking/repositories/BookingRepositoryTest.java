@@ -61,7 +61,7 @@ class BookingRepositoryTest {
         bookingRepository.save(b3);
 
         List<Booking> bookings = bookingRepository.findAllUserBookingsByState(user.getId(), "CURRENT", now);
-        assertTrue(bookings.isEmpty());
+        assertTrue(bookings.contains(b2));
 
         bookings = bookingRepository.findAllUserBookingsByState(user.getId(), "PAST", now);
         assertTrue(bookings.contains(b1));

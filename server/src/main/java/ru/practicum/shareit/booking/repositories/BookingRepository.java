@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT b FROM Booking b WHERE b.booker.id = :userId " +
-            "AND (:state = 'CURRENT' AND (:now BETWEEN b.start AND b.end) AND b.status = 'APPROVED' " +
+            "AND (:state = 'CURRENT' AND :now BETWEEN b.start AND b.end " +
             "OR :state = 'PAST' AND b.end < :now " +
             "OR :state = 'FUTURE' AND b.start > :now " +
             "OR :state = 'WAITING' AND b.status = 'WAITING' " +
