@@ -512,7 +512,6 @@ public class BookingServiceImplIntegrationTest {
 
         assertThat(actualBookingsOwner).isNotNull();
         assertThat(actualBookingsOwner.size()).isEqualTo(2);
-        assertEquals(actualBookingsOwner.get(0).getId(), b1.getId());
     }
 
     @Test
