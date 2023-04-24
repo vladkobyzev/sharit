@@ -120,9 +120,9 @@ public class BookingServiceImpl implements BookingService {
         PageRequest pageRequest = PageRequest.of(from, size);
         Slice<Booking> bookingsSlice = getBookingSlice(userId, state, userType, pageRequest);
         if (!bookingsSlice.hasContent() && bookingsSlice.getNumber() > 0) {
-            int page = from / size + (from % size == 0 ? 0 : 1);
+            int page = from / size;
             bookingsSlice = getBookingSlice(userId, state, userType,
-                    PageRequest.of(page - 1, bookingsSlice.getSize(), bookingsSlice.getSort()));
+                    PageRequest.of(page, size, bookingsSlice.getSort()));
         }
         return bookingsSlice.toList();
     }
