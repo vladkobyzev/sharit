@@ -117,13 +117,8 @@ public class BookingServiceImpl implements BookingService {
         if ((from == 0 && size == 0) || (from < 0 || size < 0)) {
             throw new BadRequest("Request without pagination");
         }
-        PageRequest pageRequest = PageRequest.of(from, size);
+        PageRequest pageRequest = PageRequest.of(from / size, size);
         Slice<Booking> bookingsSlice = getBookingSlice(userId, state, userType, pageRequest);
-        if (!bookingsSlice.hasContent() && bookingsSlice.getNumber() > 0) {
-            int page = from / size;
-            bookingsSlice = getBookingSlice(userId, state, userType,
-                    PageRequest.of(page, size, bookingsSlice.getSort()));
-        }
         return bookingsSlice.toList();
     }
 
