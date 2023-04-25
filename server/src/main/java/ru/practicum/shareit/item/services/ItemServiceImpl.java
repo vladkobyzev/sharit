@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.booking.dto.BookingDateDto;
-import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingDate;
 import ru.practicum.shareit.booking.repositories.BookingRepository;
 import ru.practicum.shareit.exceptions.BadRequest;
 import ru.practicum.shareit.exceptions.EntityNotFound;
@@ -50,8 +49,8 @@ public class ItemServiceImpl implements ItemService {
         item.getComments();
         ItemDto dto = convertItemToDto(item);
         if (item.getOwner() == userId) {
-            dto.setLastBooking(convertBookingToDateDto(bookingRepository.findLastBooking(itemId, getCurrentTime())));
-            dto.setNextBooking(convertBookingToDateDto(bookingRepository.findNextBooking(itemId, getCurrentTime())));
+            dto.setLastBooking(bookingRepository.findLastBooking(itemId, getCurrentTime()));
+            dto.setNextBooking(bookingRepository.findNextBooking(itemId, getCurrentTime()));
         }
         return dto;
     }
@@ -175,27 +174,18 @@ public class ItemServiceImpl implements ItemService {
         List<Long> itemsId = items.stream()
                 .map(ItemDto::getId).collect(Collectors.toList());
 
-        List<Booking> allNextBooking = bookingRepository.findAllNextBooking(itemsId, getCurrentTime());
+        List<BookingDate> allNextBooking = bookingRepository.findAllNextBooking(itemsId, getCurrentTime());
         if (!allNextBooking.isEmpty()) {
             for (int i = 0; i < allNextBooking.size(); i++) {
-                items.get(i).setNextBooking(convertBookingToDateDto(allNextBooking.get(i)));
+                items.get(i).setNextBooking(allNextBooking.get(i));
             }
         }
-        List<Booking> allLastBooking = bookingRepository.findAllLastBooking(itemsId, getCurrentTime());
+        List<BookingDate> allLastBooking = bookingRepository.findAllLastBooking(itemsId, getCurrentTime());
         if (!allLastBooking.isEmpty()) {
             for (int i = 0; i < allLastBooking.size(); i++) {
-                items.get(i).setLastBooking(convertBookingToDateDto(allLastBooking.get(i)));
+                items.get(i).setLastBooking(allLastBooking.get(i));
             }
         }
-    }
-
-    private BookingDateDto convertBookingToDateDto(Booking booking) {
-        if (booking == null) return null;
-        BookingDateDto dto = new BookingDateDto();
-        dto.setId(booking.getId());
-        dto.setBookingDate(booking.getStart());
-        dto.setBookerId(booking.getBooker().getId());
-        return dto;
     }
 
     private LocalDateTime getCurrentTime() {

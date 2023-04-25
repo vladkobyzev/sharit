@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingDate;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repositories.ItemRepository;
 import ru.practicum.shareit.user.model.User;
@@ -274,10 +275,10 @@ class BookingRepositoryTest {
         b2.setItem(item);
         bookingRepository.save(b2);
 
-        Booking actualBookingDate = bookingRepository.findLastBooking(savedItem.getId(), now);
+        BookingDate actualBookingDate = bookingRepository.findLastBooking(savedItem.getId(), now);
 
-        assertEquals(actualBookingDate.getBooker().getId(), b1.getBooker().getId());
-        assertEquals(actualBookingDate.getStart(), b1.getStart());
+        assertEquals(actualBookingDate.getBookerId(), b1.getBooker().getId());
+        assertEquals(actualBookingDate.getBookingDate(), b1.getStart());
     }
 
     @Test
@@ -319,10 +320,10 @@ class BookingRepositoryTest {
         b2.setItem(item);
         bookingRepository.save(b2);
 
-        List<Booking> actualBookingDate = bookingRepository.findAllLastBooking(List.of(item.getId(), item2.getId()), now);
+        List<BookingDate> actualBookingDate = bookingRepository.findAllLastBooking(List.of(item.getId(), item2.getId()), now);
 
         assertEquals(actualBookingDate.size(), 1);
-        assertEquals(actualBookingDate.get(0).getBooker().getId(), b1.getBooker().getId());
+        assertEquals(actualBookingDate.get(0).getBookerId(), b1.getBooker().getId());
     }
 
     @Test
@@ -359,10 +360,10 @@ class BookingRepositoryTest {
         b2.setItem(item);
         bookingRepository.save(b2);
 
-        Booking actualBookingDate = bookingRepository.findNextBooking(savedItem.getId(), now);
+        BookingDate actualBookingDate = bookingRepository.findNextBooking(savedItem.getId(), now);
 
-        assertEquals(actualBookingDate.getBooker().getId(), b2.getBooker().getId());
-        assertEquals(actualBookingDate.getStart(), b2.getStart());
+        assertEquals(actualBookingDate.getBookerId(), b2.getBooker().getId());
+        assertEquals(actualBookingDate.getBookingDate(), b2.getStart());
     }
 
     @Test
@@ -412,10 +413,10 @@ class BookingRepositoryTest {
         b3.setItem(item2);
         bookingRepository.save(b3);
 
-        List<Booking> actualBookingDate = bookingRepository.findAllNextBooking(List.of(item.getId(), item2.getId()), now);
+        List<BookingDate> actualBookingDate = bookingRepository.findAllNextBooking(List.of(item.getId(), item2.getId()), now);
 
         assertEquals(actualBookingDate.size(), 1);
-        assertEquals(actualBookingDate.get(0).getBooker().getId(), b2.getBooker().getId());
+        assertEquals(actualBookingDate.get(0).getBookerId(), b2.getBooker().getId());
     }
 
     @Test

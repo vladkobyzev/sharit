@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
-import ru.practicum.shareit.booking.dto.BookingDateDto;
+import ru.practicum.shareit.booking.model.BookingDate;
 import ru.practicum.shareit.item.model.Comment;
 
 import javax.validation.constraints.NotBlank;
@@ -18,8 +18,8 @@ public class ItemDto {
     @NotNull
     private Boolean available;
 
-    private BookingDateDto lastBooking;
-    private BookingDateDto nextBooking;
+    private BookingDate lastBooking;
+    private BookingDate nextBooking;
 
     private Set<Comment> comments;
 

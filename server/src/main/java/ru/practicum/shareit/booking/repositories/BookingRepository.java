@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingDate;
 import ru.practicum.shareit.util.BookingStatus;
 
 import java.time.LocalDateTime;
@@ -54,25 +55,25 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "ORDER BY b.start DESC")
     Slice<Booking> findAllOwnerBookingsByState(@Param("ownerId") Long ownerId, @Param("state") String state, @Param("now") LocalDateTime now, Pageable pageable);
 
-    @Query(value = "SELECT * " +
+    @Query(value = "SELECT b.id, b.start_date AS bookingDate, b.booker_id AS bookerId " +
             "FROM bookings b WHERE b.item_id = ?1 AND b.start_date < ?2 " +
             "ORDER BY b.start_date DESC LIMIT 1", nativeQuery = true)
-    Booking findLastBooking(Long itemId, LocalDateTime currentTime);
+    BookingDate findLastBooking(Long itemId, LocalDateTime currentTime);
 
-    @Query(value = "SELECT * " +
+    @Query(value = "SELECT b.id, b.start_date AS bookingDate, b.booker_id AS bookerId " +
             "FROM bookings b WHERE b.item_id = ?1 AND b.start_date > ?2 AND NOT b.status = 'REJECTED'" +
             "ORDER BY b.start_date LIMIT 1", nativeQuery = true)
-    Booking findNextBooking(Long itemId, LocalDateTime currentTime);
+    BookingDate findNextBooking(Long itemId, LocalDateTime currentTime);
 
     boolean existsBookingByBooker_IdAndItem_IdAndStatusAndStartBefore(Long userId, Long itemId, BookingStatus status, LocalDateTime startDate);
 
-    @Query(value = "SELECT * " +
+    @Query(value = "SELECT b.id, b.start_date AS bookingDate, b.booker_id AS bookerId " +
             "FROM bookings b WHERE b.item_id IN (?1) AND b.start_date > ?2 AND NOT b.status = 'REJECTED' " +
             "ORDER BY b.start_date LIMIT 1", nativeQuery = true)
-    List<Booking> findAllNextBooking(List<Long> itemsId, LocalDateTime currentTime);
+    List<BookingDate> findAllNextBooking(List<Long> itemsId, LocalDateTime currentTime);
 
-    @Query(value = "SELECT * " +
+    @Query(value = "SELECT b.id, b.start_date AS bookingDate, b.booker_id AS bookerId " +
             "FROM bookings b WHERE b.item_id IN (?1) AND b.start_date < ?2 " +
             "ORDER BY b.start_date DESC LIMIT 1", nativeQuery = true)
-    List<Booking> findAllLastBooking(List<Long> itemsId, LocalDateTime currentTime);
+    List<BookingDate> findAllLastBooking(List<Long> itemsId, LocalDateTime currentTime);
 }

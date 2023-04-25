@@ -9,8 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import ru.practicum.shareit.booking.dto.BookingDateDto;
-import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingDate;
 import ru.practicum.shareit.booking.repositories.BookingRepository;
 import ru.practicum.shareit.exceptions.BadRequest;
 import ru.practicum.shareit.exceptions.EntityNotFound;
@@ -468,21 +467,39 @@ class ItemServiceImplTest {
         User booker2 = new User();
         booker2.setId(2L);
 
-        Booking lastBookingDate1 = new Booking();
-        lastBookingDate1.setId(1L);
-        lastBookingDate1.setStart(lastBooking);
-        lastBookingDate1.setBooker(booker1);
+        BookingDate lastBookingDate = new BookingDate() {
+            @Override
+            public Long getId() {
+                return null;
+            }
 
-        Booking nextBookingDate1 = new Booking();
-        nextBookingDate1.setId(2L);
-        nextBookingDate1.setStart(nextBooking);
-        nextBookingDate1.setBooker(booker2);
+            @Override
+            public LocalDateTime getBookingDate() {
+                return lastBooking;
+            }
 
-        BookingDateDto lastBookingDate = new BookingDateDto();
-        lastBookingDate.setBookingDate(lastBooking);
+            @Override
+            public Long getBookerId() {
+                return null;
+            }
+        };
 
-        BookingDateDto nextBookingDate = new BookingDateDto();
-        nextBookingDate.setBookingDate(nextBooking);
+        BookingDate nextBookingDate = new BookingDate() {
+            @Override
+            public Long getId() {
+                return null;
+            }
+
+            @Override
+            public LocalDateTime getBookingDate() {
+                return nextBooking;
+            }
+
+            @Override
+            public Long getBookerId() {
+                return null;
+            }
+        };
 
         ItemDto expectedDto = new ItemDto();
         expectedDto.setId(itemId);
@@ -492,8 +509,8 @@ class ItemServiceImplTest {
 
         when(itemRepository.findById(itemId)).thenReturn(Optional.of(item));
         when(modelMapper.map(item, ItemDto.class)).thenReturn(expectedDto);
-        when(bookingRepository.findLastBooking(eq(itemId), any(LocalDateTime.class))).thenReturn(lastBookingDate1);
-        when(bookingRepository.findNextBooking(eq(itemId), any(LocalDateTime.class))).thenReturn(nextBookingDate1);
+        when(bookingRepository.findLastBooking(eq(itemId), any(LocalDateTime.class))).thenReturn(lastBookingDate);
+        when(bookingRepository.findNextBooking(eq(itemId), any(LocalDateTime.class))).thenReturn(nextBookingDate);
 
 
 
