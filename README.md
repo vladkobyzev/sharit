@@ -11,4 +11,4 @@
 * Run the docker compose file
 
 ## Status and plans for the completion of the project
-Complete
+Add a mailing system to the notification email
